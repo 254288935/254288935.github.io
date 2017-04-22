@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[RIO、STF、Frontend交互相关功能]]></title>
+      <url>/2017/04/21/RIO%E3%80%81STF%E3%80%81Frontend%E4%BA%A4%E4%BA%92%E7%9B%B8%E5%85%B3%E5%8A%9F%E8%83%BD/</url>
+      <content type="html"><![CDATA[<h1 id="RIO部分"><a href="#RIO部分" class="headerlink" title="RIO部分"></a>RIO部分</h1><h2 id="一、获取设备列表"><a href="#一、获取设备列表" class="headerlink" title="一、获取设备列表"></a>一、获取设备列表</h2><h3 id="1、从cache中取缓存设备信息"><a href="#1、从cache中取缓存设备信息" class="headerlink" title="1、从cache中取缓存设备信息"></a>1、从cache中取缓存设备信息</h3><p>1.1 取到设备信息，调用“api/rio/alive/”接口，获取在线设备列表<br><a id="more"></a></p>
+<ul>
+<li>om会返回当前所有有心跳的设备，及其对应的locker_key,  </li>
+<li>如果在线设备列表中，对应locker_key不为空，则将对应的设备status设置为Locked，否则置为Free</li>
+<li>如果在线设备列表中，有新增设备，则调用“api/rio/”获取全部设备信息列 </li>
+</ul>
+<p>1.2 无法取到设备信息，调用”api/rio/“接口，获取全部设备信息</p>
+<ul>
+<li>OM会返回当前所有的设备的全量信息，包括status和locker_key  </li>
+<li>获取到当前设备列表后，结合本地租用记录判断，如果有对应的租用记录，则将该设备status设置成Locked，并设置locker_key</li>
+</ul>
+<h2 id="二、-Rent"><a href="#二、-Rent" class="headerlink" title="二、 Rent"></a>二、 Rent</h2><p>1、先判断余额，余额不足，返回失败(如果是续租(duration=0)则不判断余额)，返回：余额不足:当前可用时长=x小时，租用时长=y小时</p>
+<p>2、判断要租用的设备key是否在设备列表中，不在则返回：无法识别的设备key<br>3、已获取待租用设备，调用’api/rio/alive/‘接口，判断设备是否在线，如不在线，返回：该设备无法租用。注：这里没判断是否续租，即如果是续租，也会提示：该设备无法租用<br>4、判断设备是否被其他用户租用，如已被租用，提示：该设备已被其他用户租用！<br>5、扣费，扣费成功，通知OM lock device，并生成租用记录，并返回成功租用的设备信息，包括：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">data = &#123;  </div><div class="line">    &quot;code&quot;: 0,  </div><div class="line">    &quot;public_ip&quot;: device[&quot;public_ip&quot;],  </div><div class="line">    &quot;massage&quot;: u&apos;&apos;,  </div><div class="line">    &quot;serial_no&quot;: device[&quot;serial_no&quot;],  </div><div class="line">    &quot;public_port&quot;: device[&quot;public_port&quot;],  </div><div class="line">    &quot;device_key&quot;: device[&quot;key&quot;],  </div><div class="line">    &quot;device_name&quot;: device[&quot;key&quot;],  </div><div class="line">    &quot;time_left&quot;: time_left,  </div><div class="line">    &quot;is_first_rent&quot;: is_first_rent,  </div><div class="line">    &quot;rent_key&quot;: rent_record.key,  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>扣费失败：返回扣费失败信息<br>6、成功租用，创建并返回租用记录<br><a href="http://confluence.testbird.com/download/attachments/6362722/image2016-3-7%2021%3A20%3A50.png?version=1&amp;modificationDate=1457356851000&amp;api=v2" target="_blank" rel="external">image</a></p>
+<h2 id="三、Unlock（停止租用接口）"><a href="#三、Unlock（停止租用接口）" class="headerlink" title="三、Unlock（停止租用接口）"></a>三、Unlock（停止租用接口）</h2><p>1、expend接口中，如果发现租用记录中当秋安剩余可用时间不足，则提示余额不足并调用unlock退出租用<br>2、前端主动调用unclock，停止租用</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Testing </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Testbird </tag>
+            
+            <tag> 项目关系 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[first_touch]]></title>
+      <url>/2017/04/21/first-touch/</url>
+      <content type="html"><![CDATA[<blockquote><p>Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.</p>
+<footer><strong>David Levithan</strong><cite>Wide Awake</cite></footer></blockquote>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/2017/04/20/hello-world/</url>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+  
+  
+    
+    <entry>
+      <title><![CDATA[categories]]></title>
+      <url>/categories/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[tags]]></title>
+      <url>/tags/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+  
+</search>
